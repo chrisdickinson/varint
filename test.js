@@ -46,6 +46,41 @@ test('test encode works as expected', function(assert) {
   assert.end()
 })
 
+test('test decode single bytes', function(assert) {
+  var vi = varint()
+    , expected = randint(parseInt('1111111', '2'))
+
+  vi.once('data', function(data) {
+    assert.equal(data, expected)
+    assert.end()
+  })
+
+  vi.write(expected)
+})
+
+test('test decode multiple bytes with zero', function(assert) {
+  var vi = varint()
+    , expected = randint(parseInt('1111111', '2'))
+
+  vi.once('data', function(data) {
+    assert.equal(data, expected << 7)
+    assert.end()
+  })
+
+  vi.write(0x80)
+  vi.write(expected)
+})
+
+test('encode single byte', function(assert) {
+  var expected = randint(parseInt('1111111', '2'))
+  assert.deepEqual(varint.encode(expected), [expected])
+  assert.end()
+})
+
+test('encode multiple byte with zero first byte', function(assert) {
+  var expected = 0x0F00
+  assert.deepEqual(varint.encode(expected), [0x80, 0x1E])
+})
 
 function randint(range) {
   return ~~(Math.random() * range)  
