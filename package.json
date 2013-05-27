@@ -1,6 +1,6 @@
 {
   "name": "varint",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "use msb to create integer values of varying sizes",
   "main": "index.js",
   "scripts": {
