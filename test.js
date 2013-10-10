@@ -9,7 +9,8 @@ test('fuzz test', function(assert) {
     expect = randint(0x7FFFFFFF)
     encoded = varint.encode(expect)
     var data = varint.decode(encoded)
-    assert.equal(expect, data, 'fuzz test: '+expect.toString())
+    assert.equal(expect, data[0], 'fuzz test: '+expect.toString())
+    assert.equal(data[1], encoded.length)
   }
 
   assert.end()
@@ -20,7 +21,8 @@ test('test single byte works as expected', function(assert) {
   buf[0] = 172
   buf[1] = 2
   var data = varint.decode(buf)
-  assert.equal(data, 300, 'should equal 300')
+  assert.equal(data[0], 300, 'should equal 300')
+  assert.equal(data[1], 2)
   assert.end()
 })
 
@@ -37,7 +39,8 @@ test('test decode single bytes', function(assert) {
   var buf = new Uint8Array(1)
   buf[0] = expected
   var data = varint.decode(buf)
-  assert.equal(data, expected)
+  assert.equal(data[0], expected)
+  assert.equal(data[1], 1)
   assert.end()
 })
 
@@ -47,7 +50,8 @@ test('test decode multiple bytes with zero', function(assert) {
   buf[0] = 128
   buf[1] = expected
   var data = varint.decode(buf)
-  assert.equal(data, expected << 7)
+  assert.equal(data[0], expected << 7)
+  assert.equal(data[1], 2)
   assert.end()
 })
 
