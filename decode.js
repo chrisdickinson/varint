@@ -18,5 +18,7 @@ function read(buf, offset) {
     shift += 7
   } while (b >= MSB)
   
-  return [res, counter - offset]
+  read.bytesRead = counter - offset
+  
+  return res
 }
