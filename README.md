@@ -27,6 +27,10 @@ decodes `data`, which can be either a buffer or array of integers, from position
 
 if you also require the length (number of bytes) that were required to decode the integer you can access it via `varint.decode.bytesRead`. this is an integer property that will tell you the number of bytes that the last .decode() call had to use to decode.
 
+### varint.encode.bytesWritten
+
+similar to `bytesRead` when encoding a number it can be useful to know how many bytes where written (especially if you pass an output array). you can access this via `varint.encode.bytesWritten` which holds the number of bytes written in the last encode.
+
 ## usage notes
 
 if you are using this to decode buffers from a streaming source it's up to you to make sure that you send 'complete' buffers into `varint.decode`. the maximum number of bytes that varint will need to decode is 8, so all you have to do is make sure you are sending buffers that are at least 8 bytes long from the point at which you know a varint range begins.
