@@ -60,12 +60,14 @@ test('test decode multiple bytes with zero', function(assert) {
 test('encode single byte', function(assert) {
   var expected = randint(parseInt('1111111', '2'))
   assert.deepEqual(encode(expected), [expected])
+  assert.equal(encode.bytesWritten, 1)
   assert.end()
 })
 
 test('encode multiple byte with zero first byte', function(assert) {
   var expected = 0x0F00
   assert.deepEqual(encode(expected), [0x80, 0x1E])
+  assert.equal(encode.bytesWritten, 2)
   assert.end()
 })
 
