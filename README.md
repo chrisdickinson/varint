@@ -31,6 +31,11 @@ if you also require the length (number of bytes) that were required to decode th
 
 similar to `bytesRead` when encoding a number it can be useful to know how many bytes where written (especially if you pass an output array). you can access this via `varint.encode.bytesWritten` which holds the number of bytes written in the last encode.
 
+
+### varint.encodingLength(num)
+
+returns the number of bytes this number will be encoded as, up to a maximum of 8.
+
 ## usage notes
 
 if you are using this to decode buffers from a streaming source it's up to you to make sure that you send 'complete' buffers into `varint.decode`. the maximum number of bytes that varint will need to decode is 8, so all you have to do is make sure you are sending buffers that are at least 8 bytes long from the point at which you know a varint range begins.
