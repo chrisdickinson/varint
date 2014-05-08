@@ -71,6 +71,41 @@ test('encode multiple byte with zero first byte', function(assert) {
   assert.end()
 })
 
+test('big integers', function (assert) {
+
+  var bigs = []
+  for(var i = 32; i <= 52; i++) (function (i) {
+    bigs.push(Math.pow(2, i) - 1)
+    bigs.push(Math.pow(2, i))
+  })(i)
+  console.log(bigs)
+  bigs.forEach(function (n) {
+    var data = encode(n)
+    console.error(n, '->', data)
+    assert.equal(decode(data), n)
+  })
+  assert.end()
+})
+
+test('fuzz test - big', function(assert) {
+  var expect
+    , encoded
+
+  var MAX_INTD = Math.pow(2, 51)
+  var MAX_INT = Math.pow(2, 31)
+
+  for(var i = 0, len = 100; i < len; ++i) {
+    expect = randint(MAX_INTD - MAX_INT) + MAX_INT
+    encoded = encode(expect)
+    var data = decode(encoded)
+    assert.equal(expect, data, 'fuzz test: ' + expect.toString())
+    assert.equal(decode.bytesRead, encoded.length)
+  }
+
+  assert.end()
+})
+
+
 function randint(range) {
-  return ~~(Math.random() * range)  
+  return Math.floor(Math.random() * range)
 }
