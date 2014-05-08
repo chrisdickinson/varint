@@ -74,7 +74,7 @@ test('encode multiple byte with zero first byte', function(assert) {
 test('big integers', function (assert) {
 
   var bigs = []
-  for(var i = 32; i <= 52; i++) (function (i) {
+  for(var i = 32; i <= 53; i++) (function (i) {
     bigs.push(Math.pow(2, i) - 1)
     bigs.push(Math.pow(2, i))
   })(i)
@@ -83,6 +83,7 @@ test('big integers', function (assert) {
     var data = encode(n)
     console.error(n, '->', data)
     assert.equal(decode(data), n)
+    assert.notEqual(decode(data), n - 1)
   })
   assert.end()
 })
@@ -91,7 +92,7 @@ test('fuzz test - big', function(assert) {
   var expect
     , encoded
 
-  var MAX_INTD = Math.pow(2, 51)
+  var MAX_INTD = Math.pow(2, 55)
   var MAX_INT = Math.pow(2, 31)
 
   for(var i = 0, len = 100; i < len; ++i) {
