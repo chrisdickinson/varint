@@ -14,7 +14,7 @@ function encode(num, out, offset) {
     out[offset++] = (num & 0xFF) | MSB
     num /= 128
   }
-  while(num >= 0x80) {
+  while(num & MSBALL) {
     out[offset++] = (num & 0xFF) | MSB
     num >>>= 7
   }
