@@ -78,7 +78,7 @@ test('big integers', function (assert) {
     bigs.push(Math.pow(2, i) - 1)
     bigs.push(Math.pow(2, i))
   })(i)
-  console.log(bigs)
+
   bigs.forEach(function (n) {
     var data = encode(n)
     console.error(n, '->', data)
