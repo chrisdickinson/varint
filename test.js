@@ -2,6 +2,7 @@ var varint = require('./index')
   , test = require('tape')
   , decode = varint.decode
   , encode = varint.encode
+  , encodingLength = varint.encodingLength
 
 test('fuzz test', function(assert) {
   var expect
@@ -106,6 +107,15 @@ test('fuzz test - big', function(assert) {
   assert.end()
 })
 
+test('encodingLength', function (assert) {
+
+  for(var i = 0; i <= 53; i++) {
+    var n = Math.pow(2, i)
+    assert.equal(encode(n).length, encodingLength(n))
+  }
+
+  assert.end()
+})
 
 function randint(range) {
   return Math.floor(Math.random() * range)
