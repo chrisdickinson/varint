@@ -18,7 +18,12 @@ function read(buf, offset) {
     shift += 7
   } while (b >= MSB)
   
-  read.bytesRead = counter - offset
+  if(b === undefined) {
+    read.bytesRead = 0
+    res = undefined
+  }
+  else
+    read.bytesRead = counter - offset
   
   return res
 }
