@@ -2,6 +2,7 @@ var varint = require('./index')
   , test = require('tape')
   , decode = varint.decode
   , encode = varint.encode
+  , encodingLength = varint.encodingLength
 
 test('fuzz test', function(assert) {
   var expect
@@ -106,6 +107,15 @@ test('fuzz test - big', function(assert) {
   assert.end()
 })
 
+test('encodingLength', function (assert) {
+
+  for(var i = 0; i <= 53; i++) {
+    var n = Math.pow(2, i)
+    assert.equal(encode(n).length, encodingLength(n))
+  }
+
+  assert.end()
+})
 
 test('throw if there was not enough buffer to read a valid varint', function (assert) {
   var b = encode(9999999999999)
