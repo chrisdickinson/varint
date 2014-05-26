@@ -38,10 +38,11 @@ returns the number of bytes this number will be encoded as, up to a maximum of 8
 
 ## usage notes
 
-if you are using this to decode buffers from a streaming source it's up to you to make sure that you send 'complete' buffers into `varint.decode`. the maximum number of bytes that varint will need to decode is 8, so all you have to do is make sure you are sending buffers that are at least 8 bytes long from the point at which you know a varint range begins.
-
-for example, if you are reading buffers from a `fs.createReadStream`,
-imagine the first buffer contains one full varint range and half of a second one, and the second buffer contains the second half of the second varint range. in order to be safe across the buffer boundaries you'd just have to make sure the buffer you give to `varint.decode` contains the full varint range (8 bytes), otherwise you'll get an error.
+If varint is passed a buffer that does not contain a valid end
+byte, then `decode` will return undefined, and `decode.bytesRead`
+will be set to 0. If you are reading from a streaming source,
+it's okay to pass an incomplete buffer into `decode`, detect this
+case, and then concatenate the next buffer.
 
 # License
 
