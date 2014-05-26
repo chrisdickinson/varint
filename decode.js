@@ -18,6 +18,9 @@ function read(buf, offset) {
     shift += 7
   } while (b >= MSB)
   
+  if(b === undefined)
+    throw new Error('buffer ended before last byte of varint')
+
   read.bytesRead = counter - offset
   
   return res

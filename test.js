@@ -117,6 +117,17 @@ test('encodingLength', function (assert) {
   assert.end()
 })
 
+test('throw if there was not enough buffer to read a valid varint', function (assert) {
+  var b = encode(9999999999999)
+  var l = b.length
+  while(l--) {
+    assert.throws(function () {
+      decode(b.slice(0, l))
+    })
+  }
+  assert.end()
+})
+
 function randint(range) {
   return Math.floor(Math.random() * range)
 }
