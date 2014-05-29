@@ -23,13 +23,13 @@ and returns that array filled with integers.
 
 decodes `data`, which can be either a buffer or array of integers, from position `offset` or default 0 and returns the decoded original integer.
 
-### varint.decode.bytesRead
+### varint.decode.bytes
 
-if you also require the length (number of bytes) that were required to decode the integer you can access it via `varint.decode.bytesRead`. this is an integer property that will tell you the number of bytes that the last .decode() call had to use to decode.
+if you also require the length (number of bytes) that were required to decode the integer you can access it via `varint.decode.bytes`. this is an integer property that will tell you the number of bytes that the last .decode() call had to use to decode.
 
-### varint.encode.bytesWritten
+### varint.encode.bytes
 
-similar to `bytesRead` when encoding a number it can be useful to know how many bytes where written (especially if you pass an output array). you can access this via `varint.encode.bytesWritten` which holds the number of bytes written in the last encode.
+similar to `decode.bytes` when encoding a number it can be useful to know how many bytes where written (especially if you pass an output array). you can access this via `varint.encode.bytes` which holds the number of bytes written in the last encode.
 
 
 ### varint.encodingLength(num)
