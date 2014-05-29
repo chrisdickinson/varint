@@ -13,7 +13,7 @@ test('fuzz test', function(assert) {
     encoded = encode(expect)
     var data = decode(encoded)
     assert.equal(expect, data, 'fuzz test: ' + expect.toString())
-    assert.equal(decode.bytesRead, encoded.length)
+    assert.equal(decode.bytes, encoded.length)
   }
 
   assert.end()
@@ -25,7 +25,7 @@ test('test single byte works as expected', function(assert) {
   buf[1] = 2
   var data = decode(buf)
   assert.equal(data, 300, 'should equal 300')
-  assert.equal(decode.bytesRead, 2)
+  assert.equal(decode.bytes, 2)
   assert.end()
 })
 
@@ -43,7 +43,7 @@ test('test decode single bytes', function(assert) {
   buf[0] = expected
   var data = decode(buf)
   assert.equal(data, expected)
-  assert.equal(decode.bytesRead, 1)
+  assert.equal(decode.bytes, 1)
   assert.end()
 })
 
@@ -54,21 +54,21 @@ test('test decode multiple bytes with zero', function(assert) {
   buf[1] = expected
   var data = decode(buf)
   assert.equal(data, expected << 7)
-  assert.equal(decode.bytesRead, 2)
+  assert.equal(decode.bytes, 2)
   assert.end()
 })
 
 test('encode single byte', function(assert) {
   var expected = randint(parseInt('1111111', '2'))
   assert.deepEqual(encode(expected), [expected])
-  assert.equal(encode.bytesWritten, 1)
+  assert.equal(encode.bytes, 1)
   assert.end()
 })
 
 test('encode multiple byte with zero first byte', function(assert) {
   var expected = 0x0F00
   assert.deepEqual(encode(expected), [0x80, 0x1E])
-  assert.equal(encode.bytesWritten, 2)
+  assert.equal(encode.bytes, 2)
   assert.end()
 })
 
@@ -101,7 +101,7 @@ test('fuzz test - big', function(assert) {
     encoded = encode(expect)
     var data = decode(encoded)
     assert.equal(expect, data, 'fuzz test: ' + expect.toString())
-    assert.equal(decode.bytesRead, encoded.length)
+    assert.equal(decode.bytes, encoded.length)
   }
 
   assert.end()
