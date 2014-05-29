@@ -117,6 +117,20 @@ test('encodingLength', function (assert) {
   assert.end()
 })
 
+test('buffer too short', function (assert) {
+
+  var value = encode(9812938912312)
+  var buffer = encode(value)
+
+  var l = buffer.length
+  while(l--) {
+    var val = decode(buffer.slice(0, l))
+    assert.equal(val, undefined)
+    assert.equal(decode.bytesRead, 0)
+  }
+  assert.end()
+})
+
 function randint(range) {
   return Math.floor(Math.random() * range)
 }

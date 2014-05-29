@@ -9,8 +9,13 @@ function read(buf, offset) {
     , shift  = 0
     , counter = offset
     , b
+    , l = buf.length
   
   do {
+    if(counter >= l) {
+      read.bytesRead = 0
+      return undefined
+    }
     b = buf[counter++]
     res += shift < 28
       ? (b & REST) << shift
