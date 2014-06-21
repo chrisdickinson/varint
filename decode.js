@@ -23,7 +23,7 @@ function read(buf, offset) {
     shift += 7
   } while (b >= MSB)
   
-  read.bytesRead = counter - offset
+  read.bytes = counter - offset
   
   return res
 }

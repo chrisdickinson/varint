@@ -20,7 +20,7 @@ function encode(num, out, offset) {
   }
   out[offset] = num | 0
   
-  encode.bytesWritten = offset - oldOffset + 1
+  encode.bytes = offset - oldOffset + 1
   
   return out
 }
