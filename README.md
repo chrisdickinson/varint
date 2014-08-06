@@ -7,17 +7,19 @@ var varint = require('varint')
 
 var bytes = varint.encode(300) // === [0xAC, 0x02]
 varint.decode(bytes) // 300
-varint.decode.bytesRead // 2 (the last decode() call required 2 bytes)
+varint.decode.bytes // 2 (the last decode() call required 2 bytes)
 ```
 
 ## api
 
 ### varint = require('varint')
 
-### varint.encode(num[, output=[], offset=0]) -> array
+### varint.encode(num[, buffer=[], offset=0]) -> buffer
 
-encodes `num` into either the array given by `offset` or a new array at `offset`
-and returns that array filled with integers.
+Encodes `num` into `buffer` starting at `offset`. returns `buffer`, with the encoded varint written into it. If `buffer` is not provided, it will default to a new array.
+
+`varint.encode.bytes` will now be set to the number of bytes
+modified.
 
 ### varint.decode(data[, offset=0]) -> number
 
@@ -39,7 +41,7 @@ returns the number of bytes this number will be encoded as, up to a maximum of 8
 ## usage notes
 
 If varint is passed a buffer that does not contain a valid end
-byte, then `decode` will return undefined, and `decode.bytesRead`
+byte, then `decode` will return undefined, and `decode.bytes` 
 will be set to 0. If you are reading from a streaming source,
 it's okay to pass an incomplete buffer into `decode`, detect this
 case, and then concatenate the next buffer.
