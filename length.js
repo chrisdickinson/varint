@@ -6,6 +6,8 @@ var N4 = Math.pow(2, 28)
 var N5 = Math.pow(2, 35)
 var N6 = Math.pow(2, 42)
 var N7 = Math.pow(2, 49)
+var N8 = Math.pow(2, 56)
+var N9 = Math.pow(2, 63)
 
 module.exports = function (value) {
   return (
@@ -16,6 +18,8 @@ module.exports = function (value) {
   : value < N5 ? 5
   : value < N6 ? 6
   : value < N7 ? 7
-  :              8
+  : value < N8 ? 8
+  : value < N9 ? 9
+  :              10
   )
 }
