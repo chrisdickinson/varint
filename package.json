@@ -1,6 +1,6 @@
 {
   "name": "varint",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "protobuf-style varint bytes - use msb to create integer values of varying sizes",
   "main": "index.js",
   "scripts": {
