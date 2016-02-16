@@ -14,6 +14,7 @@ function read(buf, offset) {
   do {
     if(counter >= l) {
       read.bytes = 0
+      read.bytesRead = 0 // DEPRECATED
       return undefined
     }
     b = buf[counter++]
