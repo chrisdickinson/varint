@@ -10,10 +10,10 @@ function read(buf, offset) {
     , counter = offset
     , b
     , l = buf.length
-  
+
   do {
     if(counter >= l) {
-      read.bytesRead = 0
+      read.bytes = 0
       return undefined
     }
     b = buf[counter++]
@@ -22,8 +22,8 @@ function read(buf, offset) {
       : (b & REST) * Math.pow(2, shift)
     shift += 7
   } while (b >= MSB)
-  
+
   read.bytes = counter - offset
-  
+
   return res
 }
