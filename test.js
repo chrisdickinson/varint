@@ -93,10 +93,6 @@ test('big integers', function (assert) {
     console.error(n, '->', data)
     assert.equal(decode(data), n)
     assert.notEqual(decode(data), n - 1)
-    assert.equal(bufferToInt(decodeSafe(data)), n)
-
-    var safeData = encodeSafe(intToBuffer(n))
-    assert.equal(bufferToInt(decodeSafe(safeData)), n)
   })
   assert.end()
 })
@@ -175,6 +171,10 @@ test('encodingLength', function (assert) {
     assert.equal(encode(n).length, encodingLength(n))
   }
 
+  assert.end()
+})
+
+test('encodingLength - safe', function (assert) {
   for(var i = 0; i <= 53; i++) {
     var n = intToBuffer(Math.pow(2, i))
     assert.equal(encodingLength(n), encodeSafe(n).length)
