@@ -32,7 +32,6 @@ function decodeSafe(buf, offset) {
     lowBits |= (temp & 0x7F) << (i * 7)
     if (temp < 128) {
       decodeSafe.bytes = counter - offset
-      console.log('1-4')
       return join(lowBits >>> 0, 0)
     }
   }
@@ -43,7 +42,6 @@ function decodeSafe(buf, offset) {
   highBits |= (temp & 0x7F) >> 4
   if (temp < 128) {
     decodeSafe.bytes = counter - offset
-      console.log('5')
     return join(lowBits >>> 0, highBits >>> 0)
   }
 
@@ -53,7 +51,6 @@ function decodeSafe(buf, offset) {
     highBits |= (temp & 0x7F) << (i * 7 + 3)
     if (temp < 128) {
       decodeSafe.bytes = counter - offset
-      console.log('6-10')
       return join(lowBits >>> 0, highBits >>> 0)
     }
   }
