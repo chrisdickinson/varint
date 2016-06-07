@@ -2,6 +2,8 @@ var varint = require('./index')
   , test = require('tape')
   , decode = varint.decode
   , encode = varint.encode
+  , encodeSafe = varint.encodeSafe
+  , decodeSafe = varint.decodeSafe
   , encodingLength = varint.encodingLength
 
 test('fuzz test', function(assert) {
@@ -33,6 +35,12 @@ test('test encode works as expected', function(assert) {
   var out = []
 
   assert.deepEqual(encode(300), [0xAC, 0x02])
+
+  assert.end()
+})
+
+test('test encodeSafe works as expected', function(assert) {
+  assert.deepEqual(encodeSafe(intToBuffer(300)), encode(300))
 
   assert.end()
 })
@@ -85,9 +93,45 @@ test('big integers', function (assert) {
     console.error(n, '->', data)
     assert.equal(decode(data), n)
     assert.notEqual(decode(data), n - 1)
+    assert.equal(bufferToInt(decodeSafe(data)), n)
+
+    var safeData = encodeSafe(intToBuffer(n))
+    assert.equal(bufferToInt(decodeSafe(safeData)), n)
   })
   assert.end()
 })
+
+test('big integers safe', function (assert) {
+  var bigs = []
+  for(var i = 32; i <= 53; i++) (function (i) {
+    bigs.push(Math.pow(2, i) - 1)
+    bigs.push(Math.pow(2, i))
+  })(i)
+
+  bigs.forEach(function (n) {
+    console.error(n, '->', data)
+    var data = encode(n)
+    assert.equal(bufferToInt(decodeSafe(data)), n)
+
+    var safeData = encodeSafe(intToBuffer(n))
+    assert.equal(bufferToInt(decodeSafe(safeData)), n)
+  })
+  assert.end()
+})
+
+test('unsafe numbers', function(assert) {
+  var unsafes = []
+  unsafes.push(new Buffer([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0f]));
+  unsafes.push(new Buffer([0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0f]));
+  unsafes.push(new Buffer([0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0f]));
+
+  unsafes.forEach(function (n) {
+    var data = encodeSafe(n)
+    console.error(n, '->', data)
+    assert.equal(decodeSafe(data).toString(), n.toString())
+  })
+  assert.end()
+});
 
 test('fuzz test - big', function(assert) {
   var expect
@@ -107,11 +151,33 @@ test('fuzz test - big', function(assert) {
   assert.end()
 })
 
+test('fuzz test - safe', function(assert) {
+  var expect
+    , encoded
+
+  var MAX_INT = Math.pow(2, 63) - 1
+
+  for(var i = 0, len = 100; i < len; ++i) {
+    expect = randbuf(MAX_INT)
+    encoded = encodeSafe(expect)
+    var data = decodeSafe(encoded)
+    assert.equal(expect.toString(), data.toString(), 'fuzz test: ' + expect.toJSON().data)
+    assert.equal(decodeSafe.bytes, encoded.length)
+  }
+
+  assert.end()
+})
+
 test('encodingLength', function (assert) {
 
   for(var i = 0; i <= 53; i++) {
     var n = Math.pow(2, i)
     assert.equal(encode(n).length, encodingLength(n))
+  }
+
+  for(var i = 0; i <= 53; i++) {
+    var n = intToBuffer(Math.pow(2, i))
+    assert.equal(encodingLength(n), encodeSafe(n).length)
   }
 
   assert.end()
@@ -131,6 +197,44 @@ test('buffer too short', function (assert) {
   assert.end()
 })
 
+test('buffer too short - safe', function (assert) {
+  var value = encode(9812938912312)
+  var buffer = encode(value)
+
+  var l = buffer.length
+  while(l--) {
+    var val = decodeSafe(buffer.slice(0, l))
+    assert.equal(val, undefined)
+    assert.equal(decodeSafe.bytes, 0)
+  }
+  assert.end()
+})
+
 function randint(range) {
   return Math.floor(Math.random() * range)
+}
+
+function randbuf(range) {
+  return intToBuffer(randint(range))
+}
+
+function intToBuffer(int) {
+  var buffer = new Buffer(8)
+
+  for(var index = 0; index < 8; index++) {
+    var byte = int & 0xff
+    buffer[index] = byte
+    int = (int - byte) / 256
+  }
+
+  return buffer
+}
+
+function bufferToInt(buffer) {
+  var value = 0
+  for(var i = buffer.length - 1; i >= 0; i--) {
+    value = (value * 256) + buffer[i]
+  }
+
+  return value
 }
