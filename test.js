@@ -126,6 +126,7 @@ test('buffer too short', function (assert) {
   while(l--) {
     var val = decode(buffer.slice(0, l))
     assert.equal(val, undefined)
+    assert.equal(decode.bytes, 0)
     assert.equal(decode.bytesRead, 0)
   }
   assert.end()
