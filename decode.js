@@ -15,7 +15,7 @@ function read(buf, offset) {
     if(counter >= l) {
       read.bytes = 0
       read.bytesRead = 0 // DEPRECATED
-      return undefined
+      throw new Error('Could not decode varint')
     }
     b = buf[counter++]
     res += shift < 28
