@@ -1,3 +1,4 @@
+var encodeSafe = require('./encode_safe.js')
 
 var N1 = Math.pow(2,  7)
 var N2 = Math.pow(2, 14)
@@ -10,6 +11,12 @@ var N8 = Math.pow(2, 56)
 var N9 = Math.pow(2, 63)
 
 module.exports = function (value) {
+  return Buffer.isBuffer(value)
+    ? bufferEncodingLength(value)
+    : numberEncodingLength(value)
+}
+
+function numberEncodingLength(value) {
   return (
     value < N1 ? 1
   : value < N2 ? 2
@@ -22,4 +29,8 @@ module.exports = function (value) {
   : value < N9 ? 9
   :              10
   )
+}
+
+function bufferEncodingLength(value) {
+  return encodeSafe(value).length
 }
