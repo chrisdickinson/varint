@@ -20,6 +20,6 @@ module.exports = function (value) {
   : value < N7 ? 7
   : value < N8 ? 8
   : value < N9 ? 9
-  :              10
+  : Math.trunc(Math.log(number)/Math.log(128)+1)
   )
 }
