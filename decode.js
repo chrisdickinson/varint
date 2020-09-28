@@ -12,7 +12,7 @@ function read(buf, offset) {
     , l = buf.length
 
   do {
-    if (counter >= l || shift > 49) {
+    if (counter >= l) {
       read.bytes = 0
       throw new RangeError('Could not decode varint')
     }
