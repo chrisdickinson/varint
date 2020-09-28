@@ -6,7 +6,7 @@ var MSB = 0x80
   , INT = Math.pow(2, 31)
 
 function encode(num, out, offset) {
-  if (num > Number.MAX_SAFE_INTEGER) {
+  if (Number.MAX_SAFE_INTEGER && num > Number.MAX_SAFE_INTEGER) {
     encode.bytes = 0
     throw new RangeError('Could not encode varint')
   }
