@@ -30,7 +30,7 @@ var M = 10
   recomendation: return undefined
 */
 
-var buffer = new Buffer(8)
+var buffer = new Buffer.alloc(8)
 var _buffer = buffer.slice(0, 4)
 var varint = require('./')
 var l = N
@@ -38,20 +38,34 @@ var invalid = 0
 
 includeInvalid = !!process.env.INVALID
 
-var start = Date.now()
+var start
+var decoded
+var totalEncodeMs = 0
+var totalDecodeMs = 0
 while (l--) {
   var int = Math.floor(Math.random()*0x01fffffffffffff)
+  start = Date.now()
   varint.encode(int, buffer, 0)
+  totalEncodeMs += Date.now() - start
   //console.log(int, varint.decode(buffer, 0))
   //every 1000 varints, do one that will be too short,
   //measure
-  if(includeInvalid && !(l%M)) {
-    if(undefined == varint.decode(_buffer, 0))
+  if (includeInvalid && !(l%M)) {
+    start = Date.now()
+    decoded = varint.decode(_buffer, 0)
+    totalDecodeMs += Date.now() - start
+    if (decoded === undefined)
       invalid ++
-  } else 
-  if(int !== varint.decode(buffer, 0))
-    throw new Error('decode was incorrect')
+  } else {
+    start = Date.now()
+    decoded = varint.decode(buffer, 0)
+    totalDecodeMs += Date.now() - start
+    if(decoded !== int)
+      throw new Error('decode was incorrect')
+  }
 }
-
-console.log('decode&encode/ms, invalidDecodes')
-console.log(N/(Date.now() - start) + ',', invalid)
+console.log('encode/ms')
+console.log(N/totalEncodeMs)
+console.log()
+console.log('decode/ms, invalidDecodes')
+console.log(N/totalDecodeMs + ',', invalid)
