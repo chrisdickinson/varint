@@ -2,7 +2,13 @@
   "name": "varint",
   "version": "6.0.0",
   "description": "protobuf-style varint bytes - use msb to create integer values of varying sizes",
-  "main": "index.js",
+  "exports": {
+    ".": "./exports/index.js",
+    "./encode": "./exports/encode.js",
+    "./decode": "./exports/decode.js",
+    "./encodingLength": "./exports/length.js"
+  },
+  "type": "module",
   "scripts": {
     "test": "node test.js"
   },
@@ -19,6 +25,6 @@
   "author": "Chris Dickinson <chris@neversaw.us>",
   "license": "MIT",
   "devDependencies": {
-    "tape": "~2.12.3"
+    "tape": "^5.6.1"
   }
 }

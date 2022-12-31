@@ -1,8 +1,8 @@
-var varint = require('./index')
-  , test = require('tape')
-  , decode = varint.decode
-  , encode = varint.encode
-  , encodingLength = varint.encodingLength
+import varint from './exports/index.js'
+import test from 'tape'
+const decode = varint.decode
+const encode = varint.encode
+const encodingLength = varint.encodingLength
 
 test('fuzz test', function(assert) {
   var expect
