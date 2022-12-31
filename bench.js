@@ -1,3 +1,6 @@
+
+import varint from './exports/index.js'
+
 var N = 1e7
 var M = 10
 /*
@@ -30,13 +33,12 @@ var M = 10
   recomendation: return undefined
 */
 
-var buffer = new Buffer(8)
-var _buffer = buffer.slice(0, 4)
-var varint = require('./')
+var buffer = new Uint8Array(8)
+var _buffer = buffer.subarray(0, 4)
 var l = N
 var invalid = 0
 
-includeInvalid = !!process.env.INVALID
+let includeInvalid = !!process.env.INVALID
 
 var start = Date.now()
 while (l--) {
